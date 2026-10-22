@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Бриф на сайт ателье</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Golos+Text:wght@400;500;600&display=swap">
+<style>
+/* Layout: one section per screen, a tailor's tape measure as progress, sticky bottom nav for thumbs */
+:root{
+  --bg:#eef0ee; --card:#fbfcfa; --fg:#1f2430; --muted:#5f6672; --line:#d4d9d5;
+  --ink:#283a6b; --ink-soft:#e2e7f3; --tape:#f2c94c; --tape-ink:#3a2f08;
+  --display:"Prata", Georgia, serif; --body:"Golos Text", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#15181f; --card:#1d212b; --fg:#e9ebef; --muted:#a2a8b4; --line:#323846;
+  --ink:#9fb3ea; --ink-soft:#26304a; --tape:#e0b93f; --tape-ink:#2a2105; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#15181f; --card:#1d212b; --fg:#e9ebef; --muted:#a2a8b4; --line:#323846;
+  --ink:#9fb3ea; --ink-soft:#26304a; --tape:#e0b93f; --tape-ink:#2a2105; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:640px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 120px}
+header .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,7vw,38px);line-height:1.15;margin:6px 0 8px;text-wrap:balance}
+.lead{color:var(--muted);margin:0 0 20px;max-width:60ch}
+/* tape measure */
+.tape{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px 12px}
+.tape-bar{position:relative;height:30px;border-radius:3px;background:var(--tape);color:var(--tape-ink);overflow:hidden;
+  background-image:repeating-linear-gradient(90deg,var(--tape-ink) 0 1px,transparent 1px 10%),repeating-linear-gradient(90deg,var(--tape-ink) 0 1px,transparent 1px 2%);
+  background-size:100% 12px,100% 6px;background-repeat:no-repeat;background-position:0 0,0 0}
+.tape-fill{position:absolute;inset:0 auto 0 0;background:color-mix(in srgb,var(--ink) 30%,transparent);transition:width .3s}
+.tape-nums{position:absolute;inset:auto 0 3px 0;display:flex;justify-content:space-between;padding:0 3px;font-size:10px;font-variant-numeric:tabular-nums;font-weight:600}
+.tape-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:6px;font-variant-numeric:tabular-nums}
+.sec h2{font-family:var(--display);font-weight:400;font-size:24px;margin:8px 0 4px;text-wrap:balance}
+.sec .hint{color:var(--muted);font-size:14px;margin:0 0 18px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.qs{display:flex;flex-direction:column;gap:12px}
+.q label.t{font-weight:500}
+.q .sub{font-size:13px;color:var(--muted);margin-top:-6px}
+textarea,input[type=text]{width:100%;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+textarea{min-height:84px;resize:vertical}
+textarea:focus,input:focus{outline:2px solid var(--ink);outline-offset:1px;border-color:transparent}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip span{display:inline-block;padding:8px 12px;border:1px solid var(--line);border-radius:999px;font-size:14px;cursor:pointer;background:var(--bg)}
+.chip input:checked+span{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.chip input:focus-visible+span{outline:2px solid var(--ink);outline-offset:2px}
+nav.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px calc(12px + env(safe-area-inset-bottom,0px))}
+nav.bar .in{max-width:640px;margin:0 auto;display:flex;gap:10px}
+button{font:inherit;font-weight:500;border-radius:8px;padding:12px 16px;cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+button.primary{flex:1;background:var(--ink);color:var(--card);border-color:var(--ink)}
+button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.saved{font-size:12px;color:var(--muted);text-align:center;margin-top:14px}
+.done{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.done pre{white-space:pre-wrap;font:13px/1.5 var(--body);background:var(--bg);border-radius:8px;padding:12px;max-height:260px;overflow:auto;margin:0}
+.status{font-size:14px;padding:10px 12px;border-radius:8px;background:var(--ink-soft)}
+@media (prefers-reduced-motion:reduce){.tape-fill{transition:none}}
+</style>
+<style>
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px)}
+body{margin:0}
+.send{display:flex;flex-direction:column;gap:8px}
+.send a{display:block;text-align:center;text-decoration:none;font-weight:500;border-radius:8px;padding:12px 16px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+.send a.primary{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.send a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+</style>
+
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Бриф · сайт ателье</div>
+    <h1>Расскажите о вашем ателье</h1>
+    <p class="lead">Ответы помогут сделать сайт, который приводит клиентов именно к вам. Заполняйте в удобном темпе: всё сохраняется в этом браузере, можно вернуться позже. Если вопрос не про вас, пропустите его.</p>
+  </header>
+  <div class="tape" aria-hidden="true">
+    <div class="tape-bar"><div class="tape-fill" id="fill" style="width:0"></div>
+      <div class="tape-nums"><span>0</span><span>10</span><span>20</span><span>30</span><span>40</span><span>50</span></div></div>
+    <div class="tape-meta"><span id="secLabel"></span><span id="count"></span></div>
+  </div>
+  <main id="main"></main>
+  <div class="saved" id="savedNote">Черновик сохраняется автоматически</div>
+</div>
+<nav class="bar"><div class="in">
+  <button type="button" id="back">Назад</button>
+  <button type="button" class="primary" id="next">Дальше</button>
+</div></nav>
+
+<script>
+// === НАСТРОЙКИ: куда приходят ответы ===
+const TG="";    // ваш ник в Telegram без @, например "atelier_studio". Пусто = клиентка сама выберет чат
+const WA="";    // номер WhatsApp только цифрами, например "375291234567". Пусто = выбор контакта
+const MAIL="";  // ваша почта
+const S=[
+ {t:"О бизнесе",h:"Чтобы понять, кто вы и чем гордитесь.",q:[
+  ["name","Как называется ателье?"],
+  ["brand","Есть ли логотип, фирменные цвета или шрифты?","radio",["Есть всё","Есть только логотип","Нет, нужно придумать"]],
+  ["team","Сколько лет вы работаете и сколько мастеров в команде?"],
+  ["address","Где вы находитесь? Один адрес или несколько?","area"],
+  ["remote","Работаете с клиентами из других городов?","radio",["Да, мерки дистанционно и доставка","Иногда","Нет, только очно"]],
+  ["unique","Почему клиенты выбирают именно вас? Чем вы отличаетесь от других ателье?","area"],
+  ["rivals","Назовите конкурентов. Чьи сайты вам нравятся или не нравятся и почему?","area"]]},
+ {t:"Услуги",h:"Что именно вы шьёте и для кого.",q:[
+  ["sew","Что вы шьёте?","multi",["Женская одежда","Мужская одежда","Детская","Вечерние платья","Свадебные платья","Костюмы","Верхняя одежда","Униформа","Сценические костюмы","Бельё / корсеты"]],
+  ["sewOther","Что-то ещё, чего нет в списке?"],
+  ["repair","Делаете ремонт и подгонку готовой одежды?","radio",["Да","Нет, только пошив"]],
+  ["models","Есть ли свои модели или лекала, из которых клиент может выбрать основу?","area"],
+  ["fabric","Чья ткань?","radio",["Клиента","Наша","И так, и так"]],
+  ["fabricCat","Нужен ли на сайте каталог тканей?","radio",["Да","Нет","Не знаю"]],
+  ["corp","Есть ли корпоративное направление (форма для компаний, оптовые заказы)?","area"],
+  ["cert","Продаёте подарочные сертификаты?","radio",["Да","Нет","Хотим начать"]]]},
+ {t:"Цены и сроки",h:"Как говорить о деньгах и времени на сайте.",q:[
+  ["prices","Показывать цены на сайте?","radio",["Точные цены","Цены «от»","Только по запросу"]],
+  ["priceList","Если есть прайс, перечислите основные позиции и цены","area"],
+  ["terms","Сколько обычно занимает пошив? Есть ли срочный пошив?","area"],
+  ["pay","Как устроена оплата: предоплата, этапы, способы?","area"],
+  ["payOnline","Нужна ли оплата прямо на сайте?","radio",["Да","Нет","Позже"]]]},
+ {t:"Как вы работаете",h:"Путь клиента от первого сообщения до готовой вещи.",q:[
+  ["path","Опишите по шагам: обращение, консультация, мерки, эскиз, примерки, выдача","area"],
+  ["fittings","Сколько обычно примерок?"],
+  ["online","Какие форматы есть?","multi",["Консультация онлайн","Выезд мастера на дом","Только в ателье"]],
+  ["warranty","Есть гарантия или бесплатная подгонка после выдачи?","area"]]},
+ {t:"Ваши клиенты",h:"Для кого мы делаем сайт.",q:[
+  ["aud","Кто ваш основной клиент: пол, возраст, доход, повод для заказа?","area"],
+  ["requests","С какими запросами приходят чаще всего?","area"],
+  ["source","Откуда клиенты узнают о вас сейчас?","multi",["Сарафанное радио","Instagram","VK","Telegram","Яндекс.Карты / 2ГИС","Авито","Реклама","Проходящие мимо"]]]},
+ {t:"Цели сайта",h:"Что должно произойти, когда человек зашёл на сайт.",q:[
+  ["action","Главное действие посетителя","multi",["Записаться на консультацию","Позвонить","Написать в мессенджер","Оставить заявку с фото","Купить сертификат"]],
+  ["kpi","Как поймёте, что сайт работает? Сколько заявок в месяц было бы хорошо?","area"],
+  ["handler","Кто будет отвечать на заявки и как быстро?"]]},
+ {t:"Разделы и функции",h:"Отметьте нужное, лишнее уберём.",q:[
+  ["pages","Какие разделы нужны?","multi",["Услуги","Портфолио","Цены","Как мы работаем","О мастерах","Отзывы","Вопросы и ответы","Ткани","Блог","Контакты"]],
+  ["features","Какие функции нужны?","multi",["Онлайн-запись на время","Заявка с загрузкой фото","Калькулятор стоимости","Кнопки мессенджеров","Магазин готовых вещей","Продажа сертификатов","Несколько языков"]],
+  ["messengers","Какие мессенджеры и соцсети указать?","multi",["Telegram","WhatsApp","Viber","VK","Instagram","MAX"]]]},
+ {t:"Фото и тексты",h:"Из чего будет собран сайт.",q:[
+  ["photos","Есть профессиональные фото работ, мастерской, команды?","radio",["Да, много","Немного","Нет, нужна съёмка"]],
+  ["portfolio","Сколько работ можно показать? Есть фото «до/после» и процесса?","area"],
+  ["reviews","Есть отзывы клиентов? Можно их публиковать?","radio",["Есть, можно","Есть, но надо спросить","Пока нет"]],
+  ["texts","Кто пишет тексты?","radio",["Я сама / сам","Нужен копирайтер"]],
+  ["video","Есть видео: процесс, примерки, мастерская?","radio",["Да","Нет","Можем снять"]]]},
+ {t:"Дизайн",h:"Каким сайт должен казаться с первого взгляда.",q:[
+  ["mood","Какое впечатление должен производить сайт?","multi",["Премиальный, сдержанный","Тёплый, домашний","Модный, смелый","Классический","Минималистичный","Романтичный"]],
+  ["refs","Пришлите 2–3 ссылки на сайты, которые нравятся, и что в них нравится","area"],
+  ["never","Чего точно не должно быть на сайте?","area"]]},
+ {t:"Технические вопросы",h:"Если не знаете ответа, ничего страшного, разберёмся вместе.",q:[
+  ["domain","Есть домен и хостинг? Был ли сайт раньше?","area"],
+  ["admin","Будете сами обновлять сайт (работы, цены)?","radio",["Да, нужна простая админка","Нет, обновляет разработчик"]],
+  ["integr","Что подключить?","multi",["Яндекс.Метрика","Google Analytics","CRM","Яндекс.Карты / 2ГИС"]],
+  ["ads","Планируете рекламу и продвижение?","multi",["Яндекс.Директ","Таргет в соцсетях","SEO","Пока нет"]]]},
+ {t:"Бюджет и сроки",h:"Последний шаг, почти готово.",q:[
+  ["budget","Какой бюджет на сайт?"],
+  ["deadline","К какой дате нужен запуск? Есть привязка к сезону?","area"],
+  ["decider","Кто принимает решения и утверждает этапы?"],
+  ["support","Нужна поддержка сайта после запуска?","radio",["Да","Нет","Обсудим"]],
+  ["contact","Ваше имя и как с вами связаться"],
+  ["extra","Что ещё важно знать?","area"]]}
+];
+const KEY="atelier-brief-v1";
+let A={}, step=0;
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null"); if(s){A=s.a||{}; step=Math.min(s.step||0,S.length)}}catch(e){}
+const total=S.reduce((n,s)=>n+s.q.length,0);
+const main=document.getElementById("main");
+function persist(){try{localStorage.setItem(KEY,JSON.stringify({a:A,step}))}catch(e){}}
+function filled(v){return Array.isArray(v)?v.length>0:!!(v&&String(v).trim())}
+function progress(){
+  const n=S.flatMap(s=>s.q).filter(q=>filled(A[q[0]])).length;
+  document.getElementById("fill").style.width=(n/total*100)+"%";
+  document.getElementById("count").textContent=`${n} из ${total} ответов`;
+  document.getElementById("secLabel").textContent=step<S.length?`Раздел ${step+1} из ${S.length}`:"Готово";
+}
+function el(tag,attrs={},kids=[]){const e=document.createElement(tag);for(const k in attrs){if(k==="text")e.textContent=attrs[k];else e.setAttribute(k,attrs[k])}kids.forEach(c=>e.append(c));return e}
+function render(){
+  main.innerHTML="";
+  if(step>=S.length){return renderDone()}
+  const s=S[step], sec=el("section",{class:"sec"});
+  sec.append(el("h2",{text:s.t}),el("p",{class:"hint",text:s.h}));
+  const qs=el("div",{class:"qs"});
+  s.q.forEach(([id,label,type,opts])=>{
+    const box=el("div",{class:"q"});
+    if(!type||type==="area"){
+      box.append(el("label",{class:"t",for:"f_"+id,text:label}));
+      const f=type==="area"?el("textarea",{id:"f_"+id,rows:"3"}):el("input",{type:"text",id:"f_"+id});
+      f.value=A[id]||""; f.addEventListener("input",()=>{A[id]=f.value;persist();progress()});
+      box.append(f);
+    }else{
+      box.append(el("div",{class:"t",text:label,style:"font-weight:500"}));
+      if(type==="multi")box.append(el("div",{class:"sub",text:"Можно выбрать несколько"}));
+      const ch=el("div",{class:"chips",role:type==="radio"?"radiogroup":"group"});
+      opts.forEach((o,i)=>{
+        const inp=el("input",{type:type==="radio"?"radio":"checkbox",name:"f_"+id,id:`f_${id}_${i}`,value:o});
+        const cur=A[id]; inp.checked=type==="radio"?cur===o:Array.isArray(cur)&&cur.includes(o);
+        inp.addEventListener("change",()=>{
+          if(type==="radio")A[id]=o;
+          else A[id]=[...ch.querySelectorAll("input:checked")].map(x=>x.value);
+          persist();progress()});
+        ch.append(el("label",{class:"chip"},[inp,el("span",{text:o})]));
+      });
+      box.append(ch);
+    }
+    qs.append(box);
+  });
+  sec.append(qs); main.append(sec);
+  document.getElementById("back").hidden=step===0;
+  const nx=document.getElementById("next");
+  nx.hidden=false; nx.textContent=step===S.length-1?"Отправить ответы":"Дальше";
+  progress();
+}
+function asText(){
+  let out="БРИФ НА САЙТ АТЕЛЬЕ\n";
+  S.forEach(s=>{out+=`\n— ${s.t.toUpperCase()} —\n`;
+    s.q.forEach(([id,label])=>{const v=A[id];out+=`${label}\n→ ${filled(v)?(Array.isArray(v)?v.join(", "):v):"—"}\n`})});
+  return out;
+}
+function renderDone(){
+  const txt=asText(), enc=encodeURIComponent(txt);
+  const d=el("div",{class:"done"});
+  d.append(el("h2",{text:"Спасибо! Осталось отправить",style:"font-family:var(--display);font-weight:400;font-size:26px;margin:0"}),
+    el("p",{text:"Выберите, куда отправить ответы. Откроется мессенджер или почта с готовым текстом, останется выбрать получателя и нажать «Отправить».",style:"margin:0;color:var(--muted);font-size:14px"}));
+  const send=el("div",{class:"send"});
+  const link=(href,label,cls)=>{const a=el("a",{href,target:"_blank",rel:"noopener",text:label});if(cls)a.className=cls;return a};
+  send.append(
+    link((TG?"https://t.me/"+TG+"?text=":"https://t.me/share/url?url=%20&text=")+enc,"Отправить в Telegram","primary"),
+    link("https://wa.me/"+WA+"?text="+enc,"Отправить в WhatsApp"),
+    link("mailto:"+MAIL+"?subject="+encodeURIComponent("Бриф на сайт ателье")+"&body="+enc,"Отправить на почту"));
+  const pre=el("pre",{id:"out",text:txt,tabindex:"0"});
+  const cp=el("button",{type:"button",text:"Скопировать ответы"});
+  cp.addEventListener("click",()=>{
+    const done=()=>cp.textContent="Скопировано";
+    const fallback=()=>{const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r);cp.textContent="Текст выделен, скопируйте его"};
+    try{navigator.clipboard.writeText(txt).then(done,fallback)}catch(e){fallback()}
+  });
+  d.append(send,el("p",{text:"Если длинный текст не поместился в сообщение, скопируйте ответы и вставьте их вручную:",style:"margin:6px 0 0;color:var(--muted);font-size:14px"}),cp,pre);
+  main.append(d);
+  document.getElementById("next").hidden=true;
+  document.getElementById("back").hidden=false;
+  progress();
+}
+document.getElementById("next").addEventListener("click",()=>{step++;persist();render();scrollTo(0,0)});
+document.getElementById("back").addEventListener("click",()=>{step=Math.max(0,step-1);persist();render();scrollTo(0,0)});
+render();
+</script>
+
+</body>
+</html>
